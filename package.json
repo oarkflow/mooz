@@ -50,11 +50,13 @@
         ]
     },
     "devDependencies": {
+        "@babel/core": "^7.22.17",
         "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
         "@babel/plugin-syntax-flow": "^7.22.5",
         "@babel/plugin-transform-react-jsx": "^7.22.15",
         "@craco/craco": "^7.1.0",
         "@craco/types": "^7.1.0",
+        "@testing-library/dom": "^9.3.1",
         "@types/fscreen": "^1.0.1",
         "@types/node": "^20.6.0",
         "@types/react": "^18.2.21",
