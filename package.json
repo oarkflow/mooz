@@ -8,9 +8,6 @@
     "dependencies": {
         "@fluentui/react": "^8.111.2",
         "@fluentui/theme": "^2.6.35",
-        "@testing-library/jest-dom": "^5.11.8",
-        "@testing-library/react": "^11.2.3",
-        "@testing-library/user-event": "^12.6.0",
         "fscreen": "^1.2.0",
         "nanoid": "^4.0.2",
         "process": "^0.11.10",
@@ -26,8 +23,8 @@
     },
     "scripts": {
         "set_env": "REACT_APP_VERSION=$npm_package_version REACT_APP_NAME=$npm_package_name",
-        "dev": "npm run set_env craco start",
-        "build": "npm run format && npm run lint && npm run set_env craco build",
+        "start": "react-scripts start",
+        "build": "react-scripts build",
         "format": "prettier --write src",
         "lint": "eslint src"
     },
@@ -54,8 +51,6 @@
         "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
         "@babel/plugin-syntax-flow": "^7.22.5",
         "@babel/plugin-transform-react-jsx": "^7.22.15",
-        "@craco/craco": "^7.1.0",
-        "@craco/types": "^7.1.0",
         "@testing-library/dom": "^9.3.1",
         "@types/fscreen": "^1.0.1",
         "@types/node": "^20.6.0",
