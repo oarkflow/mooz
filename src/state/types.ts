@@ -1,129 +1,127 @@
-import { Socket } from 'socket.io-client'
+import {Socket} from 'socket.io-client'
 import Peer from 'simple-peer'
-import { RefObject } from 'react'
+import {RefObject} from 'react'
 
 // TODO Enum keys to reduce socket payload.
 export type ISocketMessageData =
-  | {
-      connection: true
-      userName: string
-    }
-  | {
-      sdpSignal: unknown
-      metaData: ConnectionMetaData
-    }
+    | {
+    connection: true
+    userName: string
+}
+    | {
+    sdpSignal: unknown
+    metaData: ConnectionMetaData
+}
 
 type ConnectionMetaData = {
-  screenStreamId: string
-  userStreamId: string
+    screenStreamId: string
+    userStreamId: string
 }
 
 export interface IChatState {
-  messages: IChatMessage[]
+    messages: IChatMessage[]
 }
 
 export interface IPeerData {
-  chat?: IChatMessage
+    chat?: IChatMessage
 }
 
 export class Stream extends MediaStream {
-  addTrack = (track: MediaStreamTrack): void => {
-    super.addTrack(track)
+    get empty(): boolean {
+        return this.getTracks().length === 0
+    }
 
-    const ev = new MediaStreamTrackEvent('addtrack', { track })
-    this.dispatchEvent(ev)
-  }
+    get noVideo(): boolean {
+        return this.getVideoTracks().length === 0
+    }
 
-  removeTrack = (track: MediaStreamTrack): void => {
-    track.stop()
-    super.removeTrack(track)
+    get noAudio(): boolean {
+        return this.getAudioTracks().length === 0
+    }
 
-    const ev = new MediaStreamTrackEvent('removetrack', { track })
-    this.dispatchEvent(ev)
-  }
+    addTrack = (track: MediaStreamTrack): void => {
+        super.addTrack(track)
 
-  destroy = (): void => {
-    this.getTracks().forEach(this.removeTrack)
-  }
+        const ev = new MediaStreamTrackEvent('addtrack', {track})
+        this.dispatchEvent(ev)
+    }
 
-  get empty(): boolean {
-    return this.getTracks().length === 0
-  }
+    removeTrack = (track: MediaStreamTrack): void => {
+        track.stop()
+        super.removeTrack(track)
 
-  get noVideo(): boolean {
-    return this.getVideoTracks().length === 0
-  }
+        const ev = new MediaStreamTrackEvent('removetrack', {track})
+        this.dispatchEvent(ev)
+    }
 
-  get noAudio(): boolean {
-    return this.getAudioTracks().length === 0
-  }
+    destroy = (): void => {
+        this.getTracks().forEach(this.removeTrack)
+    }
 }
 
 export interface ILocalState {
-  sessionId: string
-  userStream: Stream
-  displayStream: Stream
-  videoDevices: MediaDeviceInfo[]
-  audioDevices: MediaDeviceInfo[]
-  currentCameraId: string | null
-  currentMicId: string | null
-  screenMediaActive: boolean
-  inviteCoachmarkVisible: boolean
-  showEmptyMediaPanel: boolean
-  sidePanelTab: 'chats' | 'people' | undefined
-  floatingChatEnabled: boolean
-  fullscreenEnabled: boolean
-  screenShareButtonRef?: RefObject<HTMLButtonElement>
-  cameraButtonRef?: RefObject<HTMLButtonElement>
-  micButtonRef?: RefObject<HTMLButtonElement>
-  chatsButtonRef?: RefObject<HTMLButtonElement>
-  preferences: {
-    userName?: string
-    meetingName?: string
-  }
+    sessionId: string
+    userStream: Stream
+    displayStream: Stream
+    videoDevices: MediaDeviceInfo[]
+    audioDevices: MediaDeviceInfo[]
+    currentCameraId: string | null
+    currentMicId: string | null
+    screenMediaActive: boolean
+    inviteCoachmarkVisible: boolean
+    showEmptyMediaPanel: boolean
+    sidePanelTab: 'chats' | 'people' | undefined
+    floatingChatEnabled: boolean
+    fullscreenEnabled: boolean
+    screenShareButtonRef?: RefObject<HTMLButtonElement>
+    cameraButtonRef?: RefObject<HTMLButtonElement>
+    micButtonRef?: RefObject<HTMLButtonElement>
+    chatsButtonRef?: RefObject<HTMLButtonElement>
+    preferences: {
+        userName?: string
+        meetingName?: string
+    }
 }
 
 export interface IRemoteState {
-  socket: Socket<
-    IServerToClientEvent<ISocketMessageData>,
-    IClientToServerEvent<ISocketMessageData>
-  >
-  room: IRoom | null
-  connections: IConnection[]
+    socket: Socket<IServerToClientEvent<ISocketMessageData>,
+        IClientToServerEvent<ISocketMessageData>>
+    room: IRoom | null
+    connections: IConnection[]
 }
 
 export interface IChatMessage {
-  id: string
-  text: string
-  userLabel: string
-  mine?: boolean
+    id: string
+    text: string
+    userLabel: string
+    mine?: boolean
 }
 
 export interface IConnection {
-  userId: string
-  initiator: boolean
-  userName: string
-  userStream: Stream
-  displayStream: Stream
-  peerInstance: Peer.Instance
-  metaData?: ConnectionMetaData
+    userId: string
+    initiator: boolean
+    userName: string
+    userStream: Stream
+    displayStream: Stream
+    peerInstance: Peer.Instance
+    metaData?: ConnectionMetaData
 }
 
 export interface IRoom {
-  id: string
-  created_by?: string
-  name: string
-  opts?: {
-    capacity?: number
-  }
+    id: string
+    created_by?: string
+    name: string
+    opts?: {
+        capacity?: number
+    }
 }
 
 export type IServerRoom = {
-  userIds: string[]
+    userIds: string[]
 } & IRoom
 
 export interface ISocketData {
-  sessionId: string
+    sessionId: string
 }
 
 type Ev<T extends object = object> = (
@@ -132,20 +130,20 @@ type Ev<T extends object = object> = (
 ) => void
 
 export interface IServerToClientEvent<T = unknown> {
-  'action:room_connection_established': Ev<{ room: IRoom }>
-  'action:room_connection_terminated': Ev<{ roomId: string }>
+    'action:room_connection_established': Ev<{ room: IRoom }>
+    'action:room_connection_terminated': Ev<{ roomId: string }>
 
-  'action:establish_peer_connection': Ev<{ userName: string; userId: string }>
-  'action:terminate_peer_connection': Ev<{ userId: string }>
+    'action:establish_peer_connection': Ev<{ userName: string; userId: string }>
+    'action:terminate_peer_connection': Ev<{ userId: string }>
 
-  'action:message_received': Ev<{ from: string; data: T }>
+    'action:message_received': Ev<{ from: string; data: T }>
 }
 
 export interface IClientToServerEvent<T = unknown> {
-  'request:create_room': Ev<{ room: IRoom }>
-  'request:join_room': Ev<{ userName: string; roomId: string }>
-  'request:leave_room': Ev<{ roomId: string }>
+    'request:create_room': Ev<{ room: IRoom }>
+    'request:join_room': Ev<{ userName: string; roomId: string }>
+    'request:leave_room': Ev<{ roomId: string }>
 
-  'request:send_mesage': Ev<{ to: string; roomId: string, data: T }>
-  'request:report_person_left': Ev<{ userId: string; roomId: string }>
+    'request:send_mesage': Ev<{ to: string; roomId: string, data: T }>
+    'request:report_person_left': Ev<{ userId: string; roomId: string }>
 }
