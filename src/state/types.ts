@@ -1,5 +1,5 @@
 import {Socket} from 'socket.io-client'
-import Peer from 'simple-peer'
+import Peer from '../comps/simple-peer'
 import {RefObject} from 'react'
 
 // TODO Enum keys to reduce socket payload.

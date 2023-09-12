@@ -3,6 +3,7 @@ import { defineConfig, splitVendorChunkPlugin } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import AutoImport from 'unplugin-auto-import/vite'
 import Unocss from 'unocss/vite'
+import NodeGlobalsPolyfillPlugin from "@esbuild-plugins/node-globals-polyfill";
 
 export default defineConfig({
     define: {
@@ -20,6 +21,9 @@ export default defineConfig({
         },
     },
     plugins: [
+        NodeGlobalsPolyfillPlugin({
+            buffer: true
+        }),
         splitVendorChunkPlugin(),
         Unocss(),
         react(),

@@ -1,4 +1,4 @@
-import type {Instance} from 'simple-peer'
+import type {Instance} from '../comps/simple-peer'
 import adapter from 'webrtc-adapter'
 
 type Maybe<T> = T | null | undefined
