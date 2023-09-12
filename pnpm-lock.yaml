@@ -94,6 +94,9 @@ devDependencies:
   '@unocss/transformer-variant-group':
     specifier: ^0.55.7
     version: 0.55.7
+  '@vitejs/plugin-basic-ssl':
+    specifier: ^1.0.1
+    version: 1.0.1(vite@4.4.9)
   '@vitejs/plugin-react-swc':
     specifier: ^3.3.2
     version: 3.3.2(vite@4.4.9)
@@ -1289,6 +1292,15 @@ packages:
       vite: 4.4.9(@types/node@20.6.0)
     transitivePeerDependencies:
       - rollup
+    dev: true
+
+  /@vitejs/plugin-basic-ssl@1.0.1(vite@4.4.9):
+    resolution: {integrity: sha512-pcub+YbFtFhaGRTo1832FQHQSHvMrlb43974e2eS8EKleR3p1cDdkJFPci1UhwkEf1J9Bz+wKBSzqpKp7nNj2A==}
+    engines: {node: '>=14.6.0'}
+    peerDependencies:
+      vite: ^3.0.0 || ^4.0.0
+    dependencies:
+      vite: 4.4.9(@types/node@20.6.0)
     dev: true
 
   /@vitejs/plugin-react-swc@3.3.2(vite@4.4.9):
