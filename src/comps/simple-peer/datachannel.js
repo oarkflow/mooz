@@ -1,5 +1,5 @@
 /*! simple-peer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
-import stream from 'readable-stream'
+import {Duplex} from 'stream'
 import errCode from 'err-code'
 
 
@@ -13,7 +13,7 @@ function closeChannel (channel) {
     } catch (err) { }
 }
 
-class DataChannel extends stream.Duplex {
+class DataChannel extends Duplex {
     constructor (opts = {}) {
         opts = Object.assign({
             allowHalfOpen: false
@@ -21,6 +21,7 @@ class DataChannel extends stream.Duplex {
 
         super(opts)
 
+        this.closed = false
         this._chunk = null
         this._cb = null
         this._interval = null
