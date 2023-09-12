@@ -34,6 +34,10 @@ export const createSocket = () => {
     socket.onAny((event, ...args) => {
         debug(`socket.io: got event '${event}' with args:`, ...args)
     })
+    
+    socket.on('error', (err) => {
+        console.log("Error", err)
+    })
 
     return socket
 }

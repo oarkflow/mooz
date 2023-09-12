@@ -23,7 +23,7 @@
 	},
 	"scripts": {
 		"set_env": "REACT_APP_VERSION=$npm_package_version REACT_APP_NAME=$npm_package_name",
-		"start": "react-scripts start",
+		"start": "HTTPS=true react-scripts start",
 		"build": "react-scripts build",
 		"format": "prettier --write src",
 		"lint": "eslint src"
