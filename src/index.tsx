@@ -1,4 +1,6 @@
 import React, {FC, lazy, Suspense, useEffect, useRef} from 'react'
+import "@unocss/reset/tailwind.css";
+import "uno.css";
 import {createRoot} from 'react-dom/client'
 import {initializeIcons, mergeStyles, Spinner} from '@fluentui/react'
 import {Id, Slide, ToastContainer} from 'react-toastify'
@@ -150,7 +152,7 @@ root.render(
     </React.StrictMode>,
 )
 
-console.info(process.env.REACT_APP_NAME, process.env.REACT_APP_VERSION)
+console.info(import.meta.env.VITE_NAME, import.meta.env.VITE_VERSION)
 if (process.env.NODE_ENV === 'development') {
     // eslint-disable-next-line no-console
     reportWebVitals(debug)

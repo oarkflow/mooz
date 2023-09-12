@@ -11,15 +11,15 @@ import {onChatReceived} from './chat'
 import adapter from 'webrtc-adapter'
 
 export const createSocket = () => {
-    const serverPort = process.env.REACT_APP_SAME_ORIGIN_SOCKET_PORT
+    const serverPort = import.meta.env.VITE_SAME_ORIGIN_SOCKET_PORT
     const {protocol, hostname, port} = window.location
     const url =
-        process.env.REACT_APP_SOCKET_URL ||
+        import.meta.env.VITE_SOCKET_URL ||
         `${protocol}//${hostname}:${serverPort || port}`
 
     const socket = io(url, {
         transports: ['websocket'],
-        withCredentials: !!process.env.REACT_APP_SOCKET_URL,
+        withCredentials: !!import.meta.env.VITE_SOCKET_URL,
         auth(cb) {
             const {sessionId} = useLocalState.getState()
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
