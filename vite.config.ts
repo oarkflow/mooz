@@ -5,12 +5,8 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Unocss from 'unocss/vite'
 import NodeGlobalsPolyfillPlugin from "@esbuild-plugins/node-globals-polyfill";
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
-import basicSsl from '@vitejs/plugin-basic-ssl'
 
 export default defineConfig({
-    /*server:{
-        https: true,
-    },*/
     define: {
         global: 'globalThis'
     },
@@ -33,7 +29,6 @@ export default defineConfig({
         splitVendorChunkPlugin(),
         Unocss(),
         react(),
-        // basicSsl(),
         AutoImport({// targets to transform
             include: [
                 /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx

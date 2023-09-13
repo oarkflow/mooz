@@ -34,7 +34,7 @@ export const createSocket = () => {
     socket.onAny((event, ...args) => {
         debug(`socket.io: got event '${event}' with args:`, ...args)
     })
-    
+
     socket.on('error', (err) => {
         console.log("Error", err)
     })
@@ -159,7 +159,7 @@ export const createRemoteConnection = ({
     const peer = createPeerInstance({
         initiator,
     })
-    // @ts-ignore
+
     const connection: IConnection = {
         userId,
         userName,
@@ -193,7 +193,6 @@ export const createRemoteConnection = ({
     })
 
     peer.on('signal', sdpSignal => {
-        // @ts-ignore
         state.socket.emit('request:send_mesage', {
             to: userId,
             roomId,
@@ -213,8 +212,8 @@ export const createRemoteConnection = ({
             autoClose: Timeout.MEDIUM,
         })
         console.error(err)
-        // @ts-ignore
-        socket.emit('room:leave', {
+
+        socket.emit('request:leave_room', {
             // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
             roomId,
         })
@@ -263,7 +262,6 @@ export const createRemoteConnection = ({
     })
 
     if (!initiator) {
-        // @ts-ignore
         socket.emit('request:send_mesage', {
             to: userId,
             roomId,
@@ -299,8 +297,7 @@ export const requestLeaveRoom = () =>
         if (!room) {
             return {}
         }
-        // @ts-ignore
-        socket.emit('room:leave', {roomId: room.id}, error => {
+        socket.emit('request:leave_room', {roomId: room.id}, error => {
             if (error) {
                 toast(error.message, {type: ToastType.error})
             }

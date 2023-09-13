@@ -33,7 +33,7 @@ const io = new Server<IClientToServerEvent,
 	ISocketData>(httpServer, serverOpts)
 
 /*
-12 hours expiry.
+12 hours expiry. 
 It is long enough to last for any meeting (too long) and shouldn't be needed normally, just for the case i fuck up somewhere
 */
 const stdTTL = 12 * 60 * 60
@@ -179,7 +179,7 @@ io.on('connection', socket => {
 	})
 	
 	// @ts-ignore
-	socket.on('room:create', ({room}, cb) => {
+	socket.on('request:create_room', ({room}, cb) => {
 		try {
 			room.name =
 				room.name ||
@@ -205,7 +205,7 @@ io.on('connection', socket => {
 		}
 	})
 	// @ts-ignore
-	socket.on('room:join', async ({userName, roomId: idOrLink}, cb) => {
+	socket.on('request:join_room', async ({userName, roomId: idOrLink}, cb) => {
 		try {
 			// TODO Get permission from the room
 			const room = Rooms.get(getRoomId(idOrLink))
@@ -252,7 +252,7 @@ io.on('connection', socket => {
 		}
 	})
 	// @ts-ignore
-	socket.on('room:leave', async ({roomId}, cb) => {
+	socket.on('request:leave_room', async ({roomId}, cb) => {
 		try {
 			socket.leave(roomId)
 			kickOut(socket.data.sessionId, roomId)

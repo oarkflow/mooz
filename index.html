@@ -9,29 +9,29 @@
 </head>
 
 <body class="font-quicksand dark:text-white dark:bg-hex-121212 w-full">
-    <div id="root"></div>
-    <script>
-        (function() {
-            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-            const setting = localStorage.getItem('usehooks-ts-dark-mode') ?
-                localStorage.getItem('usehooks-ts-dark-mode') === 'true' ?
+<div id="root"></div>
+<script>
+    (function() {
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        const setting = localStorage.getItem('usehooks-ts-dark-mode') ?
+            localStorage.getItem('usehooks-ts-dark-mode') === 'true' ?
                 'dark' :
                 'light' :
-                'auto'
+            'auto'
 
-            if (setting === 'dark' || (prefersDark && setting !== 'light'))
-                document.documentElement.classList.toggle('dark', true)
-        })()
-    </script>
-    <script>
-        // AWS Amplify needs this to work. See https://github.com/aws/aws-sdk-js/issues/3673
-        const isBrowser = () => typeof window !== "undefined";
-        const isGlobal = () => typeof global !== "undefined";
-        if (!isGlobal() && isBrowser()) {
-            var global = window;
-        }
-    </script>
-    <script type="module" src="/src/index.tsx"></script>
+        if (setting === 'dark' || (prefersDark && setting !== 'light'))
+            document.documentElement.classList.toggle('dark', true)
+    })()
+</script>
+<script>
+    // AWS Amplify needs this to work. See https://github.com/aws/aws-sdk-js/issues/3673
+    const isBrowser = () => typeof window !== "undefined";
+    const isGlobal = () => typeof global !== "undefined";
+    if (!isGlobal() && isBrowser()) {
+        var global = window;
+    }
+</script>
+<script type="module" src="/src/index.tsx"></script>
 </body>
 
 </html>

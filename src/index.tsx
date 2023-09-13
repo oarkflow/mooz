@@ -53,7 +53,7 @@ const Eagle: FC = () => {
     useEffect(() => {
         const onLeavePage = () => {
             if (!currRoom) return
-            socket.emit('room:leave', {
+            socket.emit('request:leave_room', {
                 roomId: currRoom.id,
             })
         }
@@ -152,7 +152,7 @@ root.render(
     </React.StrictMode>,
 )
 
-console.info(import.meta.env.VITE_NAME, import.meta.env.VITE_VERSION)
+console.info(process.env.REACT_APP_NAME, process.env.REACT_APP_VERSION)
 if (process.env.NODE_ENV === 'development') {
     // eslint-disable-next-line no-console
     reportWebVitals(debug)

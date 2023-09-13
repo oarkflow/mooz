@@ -140,9 +140,9 @@ export interface IServerToClientEvent<T = unknown> {
 }
 
 export interface IClientToServerEvent<T = unknown> {
-    'room:create': Ev<{ room: IRoom }>
-    'room:join': Ev<{ userName: string; roomId: string }>
-    'room:leave': Ev<{ roomId: string }>
+    'request:create_room': Ev<{ room: IRoom }>
+    'request:join_room': Ev<{ userName: string; roomId: string }>
+    'request:leave_room': Ev<{ roomId: string }>
 
     'request:send_mesage': Ev<{ to: string; roomId: string, data: T }>
     'request:report_person_left': Ev<{ userId: string; roomId: string }>
