@@ -53,7 +53,7 @@ const Eagle: FC = () => {
     useEffect(() => {
         const onLeavePage = () => {
             if (!currRoom) return
-            socket.emit('request:leave_room', {
+            socket.emit('room:leave', {
                 roomId: currRoom.id,
             })
         }

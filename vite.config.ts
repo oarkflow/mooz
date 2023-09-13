@@ -8,9 +8,9 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import basicSsl from '@vitejs/plugin-basic-ssl'
 
 export default defineConfig({
-    server:{
+    /*server:{
         https: true,
-    },
+    },*/
     define: {
         global: 'globalThis'
     },
@@ -33,7 +33,7 @@ export default defineConfig({
         splitVendorChunkPlugin(),
         Unocss(),
         react(),
-        basicSsl(),
+        // basicSsl(),
         AutoImport({// targets to transform
             include: [
                 /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx

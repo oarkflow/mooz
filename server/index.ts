@@ -1,4 +1,4 @@
-import {createServer} from 'https'
+import {createServer} from 'http'
 import {Server, ServerOptions} from 'socket.io'
 import {nanoid} from 'nanoid'
 import NodeCache from 'node-cache'
@@ -10,14 +10,13 @@ import {
 	ISocketData,
 } from './types'
 import {DefaultEventsMap} from 'socket.io/dist/typed-events'
+import packageJson from './package.json'
 
 import 'dotenv/config'
-import {readFileSync} from "fs";
 
-// This line is from the Node.js HTTPS documentation.
-var options = {key: readFileSync('./cert/server.key'), cert: readFileSync('./cert/server.cert')}
-
-const httpServer = createServer(options, (_, res) => {
+console.log('version', packageJson.version)
+console.log('allow', process.env.ALLOW_ORIGIN)
+const httpServer = createServer((_, res) => {
 	res.statusCode = 200;
 	res.setHeader('Content-Type', 'text/plain');
 	res.end('ok\n');
@@ -28,8 +27,15 @@ const serverOpts: Partial<ServerOptions> = {
 		credentials: !!process.env.ALLOW_ORIGIN,
 	},
 }
-const io = new Server<IClientToServerEvent, IServerToClientEvent, DefaultEventsMap, ISocketData>(httpServer, serverOpts)
+const io = new Server<IClientToServerEvent,
+	IServerToClientEvent,
+	DefaultEventsMap,
+	ISocketData>(httpServer, serverOpts)
 
+/*
+12 hours expiry.
+It is long enough to last for any meeting (too long) and shouldn't be needed normally, just for the case i fuck up somewhere
+*/
 const stdTTL = 12 * 60 * 60
 const roomsCache = new NodeCache({
 	stdTTL,
@@ -173,7 +179,7 @@ io.on('connection', socket => {
 	})
 	
 	// @ts-ignore
-	socket.on('request:create_room', ({room}, cb) => {
+	socket.on('room:create', ({room}, cb) => {
 		try {
 			room.name =
 				room.name ||
@@ -199,7 +205,7 @@ io.on('connection', socket => {
 		}
 	})
 	// @ts-ignore
-	socket.on('request:join_room', async ({userName, roomId: idOrLink}, cb) => {
+	socket.on('room:join', async ({userName, roomId: idOrLink}, cb) => {
 		try {
 			// TODO Get permission from the room
 			const room = Rooms.get(getRoomId(idOrLink))
@@ -246,7 +252,7 @@ io.on('connection', socket => {
 		}
 	})
 	// @ts-ignore
-	socket.on('request:leave_room', async ({roomId}, cb) => {
+	socket.on('room:leave', async ({roomId}, cb) => {
 		try {
 			socket.leave(roomId)
 			kickOut(socket.data.sessionId, roomId)
