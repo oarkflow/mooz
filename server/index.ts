@@ -151,14 +151,7 @@ io.use((socket, next) => {
 		
 		// joins room person was already present in
 		if (currentRoomId) {
-			if (Rooms.getUsers(currentRoomId).includes(sessionId)) {
-				socket.join(currentRoomId)
-			} else {
-				// @ts-ignore
-				socket.emit('action:room_connection_terminated', {
-					roomId: currentRoomId,
-				})
-			}
+			socket.join(currentRoomId)
 		}
 		
 		next()
@@ -268,7 +261,7 @@ io.on('connection', socket => {
 		}
 	})
 	// @ts-ignore
-	socket.on('request:send_mesage', async ({to, roomId, data}, cb) => {
+	socket.on('request:send_message', async ({to, roomId, data}, cb) => {
 		const userId = socket.data.sessionId
 		const sockets = await io.fetchSockets()
 		if (!sockets.find(socket => socket.data.sessionId === to)) {

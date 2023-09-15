@@ -196,7 +196,7 @@ export const createRemoteConnection = ({
 
     peer.on('signal', sdpSignal => {
         console.log("received signal")
-        state.socket.emit('request:send_mesage', {
+        state.socket.emit('request:send_message', {
             to: userId,
             roomId,
             data: {
@@ -266,7 +266,7 @@ export const createRemoteConnection = ({
 
     if (!initiator) {
         console.log("initiator is false")
-        socket.emit('request:send_mesage', {
+        socket.emit('request:send_message', {
             to: userId,
             roomId,
             data: {

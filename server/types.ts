@@ -35,6 +35,6 @@ export interface IClientToServerEvent<T = unknown> {
     'request:join_room': Ev<{ userName: string; roomId: string }>
     'request:leave_room': Ev<{ roomId: string }>
 
-    'request:send_mesage': Ev<{ to: string; roomId: string, data: T }>
+    'request:send_message': Ev<{ to: string; roomId: string, data: T }>
     'request:report_person_left': Ev<{ userId: string; roomId: string }>
 }
