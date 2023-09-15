@@ -35,6 +35,7 @@ const App: FC = () => {
     const onMessage: IServerToClientEvent<ISocketMessageData>['action:message_received'] =
         useCallback(
             ({from, data}) => {
+                console.log("Message received", from, data)
                 if ('connection' in data) {
                     createRemoteConnection({
                         userId: from,

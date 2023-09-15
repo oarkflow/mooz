@@ -159,7 +159,7 @@ export const createRemoteConnection = ({
     const peer = createPeerInstance({
         initiator,
     })
-
+    console.log("creating peer", userId, userName, initiator)
     const connection: IConnection = {
         userId,
         userName,
@@ -184,15 +184,18 @@ export const createRemoteConnection = ({
         })
 
     userStream.getTracks().forEach(track => {
+        console.log('adding track to the peer', track, connection)
         debug('adding track to the peer', track, connection)
         peer.addTrack(track, connection.userStream)
     })
     displayStream.getTracks().forEach(track => {
+        console.log('adding display track t the  peer', track, connection)
         debug('adding display track t the  peer', track, connection)
         peer.addTrack(track, connection.displayStream)
     })
 
     peer.on('signal', sdpSignal => {
+        console.log("received signal")
         state.socket.emit('request:send_mesage', {
             to: userId,
             roomId,
@@ -262,6 +265,7 @@ export const createRemoteConnection = ({
     })
 
     if (!initiator) {
+        console.log("initiator is false")
         socket.emit('request:send_mesage', {
             to: userId,
             roomId,
@@ -271,7 +275,7 @@ export const createRemoteConnection = ({
             },
         })
     }
-
+    console.log("setting connection", connection)
     useRemoteState.setState(state => ({
         connections: [...state.connections, connection],
     }))
@@ -309,6 +313,7 @@ export const enterRoom = (room: IRoom) => {
     useRemoteState.setState({
         room,
     })
+    console.log("Entering room", room)
     playEnterRoomSound()
     window.history.pushState({}, 'Mooz', `/room/${room.id}`)
     toast(`Joined ${room.name}`)
